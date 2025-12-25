@@ -15,7 +15,7 @@ const Page = ({ children, id, className = "" }) => (
   </motion.div>
 );
 
-const PaginatedContent = ({ data }) => {
+const PaginatedContent = ({ data, logoBase64 }) => {
   // Canvas-like logic: Split content into chunks if it's too long
   // A4 conservative char estimate: ~3000 chars per page max
 
@@ -26,19 +26,32 @@ const PaginatedContent = ({ data }) => {
 
   const needsExtraPage = detailsLen + productsLen + aiLen > SAFE_CHAR_LIMIT;
 
+  const LogoImage = () =>
+    logoBase64 ? (
+      <img
+        src={logoBase64}
+        alt="Logo"
+        style={{ maxHeight: "60px", maxWidth: "150px" }}
+      />
+    ) : (
+      <span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+        [Company Logo]
+      </span>
+    );
+
   return (
     <>
       {/* Title Page (Always Page 1) */}
       <Page id="page-1" className="title-page">
         <div className="logo-placeholder">
-          {data.companyLogo ? (
+          {logoBase64 ? (
             <img
-              src={URL.createObjectURL(data.companyLogo)}
+              src={logoBase64}
               alt="Logo"
-              style={{ maxHeight: "100px", maxWidth: "300px" }}
+              style={{ maxHeight: "150px", maxWidth: "300px" }}
             />
           ) : (
-            "<Company Logo>"
+            "[Company Logo]"
           )}
         </div>
 
@@ -77,14 +90,39 @@ const PaginatedContent = ({ data }) => {
 
       {/* Page 2: Initial Content */}
       <Page id="page-2" className="content-page">
-        <div className="doc-header">
-          <span>{data.companyLogo ? "Logo" : "Company Logo"}</span>
-          <div className="right-header">
-            <strong>Quality Management System</strong>
-            <br />
-            Section 1- Organization Profile (Pg. 1)
-          </div>
-        </div>
+        {/* Table-based header for perfect Word/Print compatibility */}
+        <table
+          style={{
+            width: "100%",
+            borderBottom: "1px solid #ccc",
+            marginBottom: "2rem",
+          }}
+        >
+          <tbody>
+            <tr>
+              <td
+                style={{
+                  verticalAlign: "middle",
+                  border: "none",
+                  width: "30%",
+                }}
+              >
+                <LogoImage />
+              </td>
+              <td
+                style={{
+                  verticalAlign: "middle",
+                  textAlign: "right",
+                  border: "none",
+                }}
+              >
+                <strong>Quality Management System</strong>
+                <br />
+                Section 1- Organization Profile (Pg. 1)
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <div className="section-content">
           <section>
@@ -145,14 +183,38 @@ const PaginatedContent = ({ data }) => {
       {/* Page 3: Overflow Content (if needed) */}
       {needsExtraPage && (
         <Page id="page-3" className="content-page">
-          <div className="doc-header">
-            <span>{data.companyLogo ? "Logo" : "Company Logo"}</span>
-            <div className="right-header">
-              <strong>Quality Management System</strong>
-              <br />
-              Section 1- Organization Profile (Pg. 2)
-            </div>
-          </div>
+          <table
+            style={{
+              width: "100%",
+              borderBottom: "1px solid #ccc",
+              marginBottom: "2rem",
+            }}
+          >
+            <tbody>
+              <tr>
+                <td
+                  style={{
+                    verticalAlign: "middle",
+                    border: "none",
+                    width: "30%",
+                  }}
+                >
+                  <LogoImage />
+                </td>
+                <td
+                  style={{
+                    verticalAlign: "middle",
+                    textAlign: "right",
+                    border: "none",
+                  }}
+                >
+                  <strong>Quality Management System</strong>
+                  <br />
+                  Section 1- Organization Profile (Pg. 2)
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <div className="section-content">
             <div className="system-note">
               <i>(Continued from previous page...)</i>
@@ -194,12 +256,96 @@ const PaginatedContent = ({ data }) => {
   );
 };
 
+import { googleDriveService } from "../utils/googleDriveService";
+import { GOOGLE_CONFIG } from "../googleConfig";
+
 const DocumentPreview = ({ formData }) => {
   const data = getDocumentData(formData);
   const [zoomLevel, setZoomLevel] = useState(0.65); // Default to reduced size
+  const [logoBase64, setLogoBase64] = useState(null);
+  const [isGapiReady, setIsGapiReady] = useState(false);
+
+  useEffect(() => {
+    // Load Google Scripts
+    googleDriveService.loadScripts((success) => setIsGapiReady(success));
+
+    if (formData.companyLogo instanceof File) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoBase64(reader.result);
+      };
+      reader.readAsDataURL(formData.companyLogo);
+    } else {
+      setLogoBase64(null);
+    }
+  }, [formData.companyLogo]);
 
   const handleZoomIn = () => setZoomLevel((prev) => Math.min(prev + 0.1, 1.5));
   const handleZoomOut = () => setZoomLevel((prev) => Math.max(prev - 0.1, 0.3));
+
+  const handleGoogleExport = async () => {
+    // Check for default config values
+    if (
+      (GOOGLE_CONFIG.CLIENT_ID && GOOGLE_CONFIG.CLIENT_ID.includes("YOUR_")) ||
+      (GOOGLE_CONFIG.API_KEY && GOOGLE_CONFIG.API_KEY.includes("YOUR_"))
+    ) {
+      alert(
+        "SETUP REQUIRED:\n\n" +
+          "You have not configured your Google Cloud details yet.\n" +
+          "Please open 'src/googleConfig.js' and add your Client ID and API Key.\n\n" +
+          "The login window cannot open without a valid Client ID."
+      );
+      return;
+    }
+
+    if (!isGapiReady) {
+      alert(
+        "Google Services are still loading (or failed to load). Check console for API Key errors."
+      );
+      return;
+    }
+
+    try {
+      await googleDriveService.signIn();
+      const content = document.getElementById("preview-content").innerHTML;
+
+      // Basic styling wrapper for Google Doc
+      const htmlContent = `
+        <html>
+          <head>
+            <style>
+              body { font-family: 'Times New Roman', serif; }
+              table { border-collapse: collapse; width: 100%; }
+              td, th { border: 1px solid #000; padding: 5px; }
+            </style>
+          </head>
+          <body>${content}</body>
+        </html>
+      `;
+
+      const result = await googleDriveService.uploadHtmlAsDoc(
+        `${data.companyName} - Organization Profile`,
+        htmlContent
+      );
+
+      alert(`Saved to Google Drive! File ID: ${result.id}`);
+      window.open(
+        `https://docs.google.com/document/d/${result.id}/edit`,
+        "_blank"
+      );
+    } catch (error) {
+      console.error(error);
+      if (error.error === "idpiframe_initialization_failed") {
+        alert(
+          "Google Sign-In failed. Please ensure you have enabled 3rd party cookies or use a standard browser window."
+        );
+      } else {
+        alert(
+          "Failed to save to Google Docs. Check console for details (Client ID might be missing)."
+        );
+      }
+    }
+  };
 
   return (
     <div className="preview-container">
@@ -250,9 +396,16 @@ const DocumentPreview = ({ formData }) => {
             onClick={() =>
               exportToDocx("preview-content", "Organization_Profile.docx")
             }
-            className="primary-btn"
+            className="secondary-btn"
           >
-            Export to Word (.docx)
+            Docx
+          </button>
+          <button
+            onClick={handleGoogleExport}
+            className="primary-btn"
+            style={{ background: "#4285F4" }}
+          >
+            Save to YOUR Google Drive
           </button>
         </div>
       </div>
@@ -263,7 +416,7 @@ const DocumentPreview = ({ formData }) => {
         id="preview-content"
         style={{ zoom: zoomLevel }}
       >
-        <PaginatedContent data={data} />
+        <PaginatedContent data={data} logoBase64={logoBase64} />
       </div>
     </div>
   );

@@ -377,25 +377,85 @@ button {
 
 /* Print Overrides */
 @media print {
-  body {
-    background: white;
+  @page {
+    size: A4;
+    margin: 0; /* Important: removes browser default headers/footers */
   }
+
+  body,
+  .app-container,
+  .main-content,
+  .preview-section,
+  .preview-container {
+    background: transparent !important;
+    background-image: none !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Reset page container */
+  .preview-box {
+    display: block !important;
+    zoom: 1 !important;
+    transform: none !important;
+    overflow: visible !important;
+    width: 210mm !important; /* Strict A4 width */
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+
   .page {
     box-shadow: none;
-    margin: 0;
-    width: 100%;
-    min-height: auto;
+    margin: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important; /* Ensure full height */
+    max-width: none !important;
+    max-height: none !important;
     page-break-after: always;
+    page-break-inside: avoid;
+    border: none;
+    padding: 2cm !important; /* Slightly reduced padding for safe margins */
+    transform: none !important;
+    overflow: hidden;
   }
+
+  /* Target specific pages if needed */
+  .title-page {
+    height: 297mm !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Remove UI elements */
   .app-header,
   .input-section,
-  .header-actions {
+  .header-actions,
+  .zoom-controls,
+  .actions {
     display: none !important;
   }
+
   .preview-container {
     margin: 0;
     padding: 0;
+    display: block;
+    width: 100%;
   }
+
   .page-break {
     page-break-after: always;
   }

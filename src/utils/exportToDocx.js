@@ -26,6 +26,8 @@ export const exportToDocx = async (elementId, filename = "document.docx") => {
             .main-title { font-size: 36pt; font-weight: bold; margin-bottom: 20pt; }
             .sub-title { font-size: 24pt; color: #4472c4; margin-bottom: 60pt; }
             .revision-table { margin-top: auto; }
+            /* Word-safe styles */
+            img { max-width: 100%; height: auto; }
         </style>
     </head>
     <body>
@@ -35,10 +37,15 @@ export const exportToDocx = async (elementId, filename = "document.docx") => {
   `;
 
   try {
-    const blob = await asBlob(htmlString);
+    console.log("Generating DOCX blob...");
+    const blob = await asBlob(htmlString, {
+      orientation: "portrait",
+      margins: { top: 720, right: 720, bottom: 720, left: 720 }, // twips (1440 = 1 inch)
+    });
+    console.log("Blob generated, saving...", blob.size);
     saveAs(blob, filename);
   } catch (error) {
     console.error("Export failed:", error);
-    alert("Failed to generate DOCX. Please try again.");
+    alert(`Failed to generate DOCX. Error: ${error.message}`);
   }
 };
