@@ -254,7 +254,7 @@ textarea:focus {
   padding: 0;
   box-shadow: none;
   min-height: auto;
-  font-family: "Times New Roman", serif;
+  font-family: Calibri, "Segoe UI", sans-serif;
   overflow: visible;
   /* Key change for Side-by-Side Pages */
   display: flex;
