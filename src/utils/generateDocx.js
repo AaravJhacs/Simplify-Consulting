@@ -91,7 +91,7 @@ export const generateDocx = async (
           }),
         ],
         alignment: AlignmentType.CENTER,
-        spacing: { after: 1500 }, // Increased spacing to push table down
+        spacing: { after: 6000 }, // Significantly increased to push table to bottom
       }),
       // Revision Table
       new Table({
