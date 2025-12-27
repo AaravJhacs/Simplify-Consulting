@@ -77,7 +77,7 @@ export const generateDocx = async (
           new TextRun({
             text: data.companyName,
             color: "4472C4",
-            size: 36, // 18pt
+            size: 52, // 26pt (Increased size)
           }),
         ],
         alignment: AlignmentType.CENTER,
@@ -91,7 +91,7 @@ export const generateDocx = async (
           }),
         ],
         alignment: AlignmentType.CENTER,
-        spacing: { after: 800 },
+        spacing: { after: 1500 }, // Increased spacing to push table down
       }),
       // Revision Table
       new Table({
@@ -245,6 +245,19 @@ export const generateDocx = async (
 
     // Construct Document
     const doc = new Document({
+      styles: {
+        default: {
+          document: {
+            run: {
+              font: "Calibri",
+              size: 22, // 11pt
+            },
+            paragraph: {
+              spacing: { line: 276 }, // Optional: slightly nicer line height
+            },
+          },
+        },
+      },
       sections: [
         {
           properties: {},
