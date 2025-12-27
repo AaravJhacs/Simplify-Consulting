@@ -2,12 +2,14 @@
 
 :root {
   --font-family: "Inter", system-ui, -apple-system, sans-serif;
-  --bg-dark: #0f172a;
+
+  /* Default Dark Mode Variables */
+  --bg-main: #0f172a;
   --card-bg: rgba(30, 41, 59, 0.7);
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
-  --accent-primary: #6366f1; /* Indigo */
-  --accent-secondary: #8b5cf6; /* Violet */
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
   --accent-gradient: linear-gradient(
     135deg,
     var(--accent-primary),
@@ -15,12 +17,25 @@
   );
   --border-color: rgba(255, 255, 255, 0.1);
   --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --nav-bg: rgba(15, 23, 42, 0.8);
+}
+
+[data-theme="light"] {
+  --bg-main: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --glass-border: 1px solid rgba(0, 0, 0, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --nav-bg: rgba(255, 255, 255, 0.8);
 }
 
 body {
   margin: 0;
   font-family: var(--font-family);
-  background-color: var(--bg-dark);
+  background-color: var(--bg-main);
   /* Animated Mesh Gradient Background */
   background-image: radial-gradient(
       at 0% 0%,
@@ -43,7 +58,7 @@ body {
 
 .app-header {
   padding: 1.25rem 3rem;
-  background: rgba(15, 23, 42, 0.8);
+  background: var(--nav-bg);
   backdrop-filter: blur(16px);
   border-bottom: var(--glass-border);
   display: flex;
@@ -158,7 +173,7 @@ label {
   display: block;
   margin-bottom: 0.75rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 0.95rem;
 }
 
@@ -170,7 +185,7 @@ label {
 }
 
 .tooltip-icon {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
   color: var(--accent-secondary);
   border: 1px solid var(--accent-secondary);
   border-radius: 50%;
@@ -195,10 +210,10 @@ textarea,
 input[type="file"] {
   width: 100%;
   padding: 1rem 1.25rem;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--input-bg);
+  border: var(--glass-border);
   border-radius: 12px;
-  color: #fff;
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 1rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -208,7 +223,7 @@ input[type="file"] {
 input:focus,
 textarea:focus {
   outline: none;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--input-bg);
   border-color: var(--accent-secondary);
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
   transform: translateY(-1px);
@@ -589,7 +604,12 @@ button {
   width: 100%;
   height: 100%;
   overflow-y: auto; /* Allow scrolling within the home view */
-  background: radial-gradient(circle at 10% 20%, #1e1b4b 0%, #0f172a 90%);
+  background: var(--bg-main);
+}
+
+[data-theme="light"] .home-page-wrapper {
+  background: radial-gradient(circle at 10% 20%, #f0f9ff 0%, #e0f2fe 90%);
+  color: #1e293b;
 }
 
 /* Navbar */
@@ -750,7 +770,7 @@ button {
 /* Features Section */
 .features-section {
   padding: 5rem 5%;
-  background: black;
+  background: var(--bg-main);
 }
 
 .section-header {
@@ -776,7 +796,7 @@ button {
 }
 
 .feature-box {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.05);

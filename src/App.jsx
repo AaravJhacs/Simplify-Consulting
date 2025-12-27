@@ -6,7 +6,7 @@ import DocumentPreview from "./components/DocumentPreview";
 import Home from "./components/Home";
 
 // Navigation Menu Component
-const NavMenu = ({ goHome, goApp, currentView }) => {
+const NavMenu = ({ goHome, goApp, currentView, toggleTheme, currentTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -19,8 +19,8 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="menu-btn"
         style={{
-          background: "rgba(255,255,255,0.1)",
-          border: "none",
+          background: "var(--nav-bg)", // Theme aware
+          border: "1px solid var(--border-color)",
           borderRadius: "50%",
           width: "40px",
           height: "40px",
@@ -31,13 +31,14 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
           justifyContent: "center",
           gap: "4px",
           backdropFilter: "blur(5px)",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
         }}
       >
         <span
           style={{
             width: "4px",
             height: "4px",
-            background: "white",
+            background: "var(--text-primary)", // Theme aware
             borderRadius: "50%",
           }}
         ></span>
@@ -45,7 +46,7 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
           style={{
             width: "4px",
             height: "4px",
-            background: "white",
+            background: "var(--text-primary)",
             borderRadius: "50%",
           }}
         ></span>
@@ -53,7 +54,7 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
           style={{
             width: "4px",
             height: "4px",
-            background: "white",
+            background: "var(--text-primary)",
             borderRadius: "50%",
           }}
         ></span>
@@ -71,15 +72,16 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
               position: "absolute",
               top: "50px",
               right: "0",
-              background: "#1e293b",
+              background: "var(--card-bg)", // Use variable
               padding: "0.5rem",
               borderRadius: "12px",
               boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
               minWidth: "150px",
-              border: "1px solid rgba(255,255,255,0.1)",
+              border: "var(--glass-border)",
               display: "flex",
               flexDirection: "column",
               gap: "0.5rem",
+              backdropFilter: "blur(12px)",
             }}
           >
             <button
@@ -92,7 +94,8 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
                   currentView === "home"
                     ? "rgba(99, 102, 241, 0.2)"
                     : "transparent",
-                color: currentView === "home" ? "#818cf8" : "white",
+                color:
+                  currentView === "home" ? "#818cf8" : "var(--text-primary)",
                 border: "none",
                 padding: "0.75rem 1rem",
                 textAlign: "left",
@@ -113,7 +116,8 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
                   currentView === "app"
                     ? "rgba(99, 102, 241, 0.2)"
                     : "transparent",
-                color: currentView === "app" ? "#818cf8" : "white",
+                color:
+                  currentView === "app" ? "#818cf8" : "var(--text-primary)",
                 border: "none",
                 padding: "0.75rem 1rem",
                 textAlign: "left",
@@ -123,6 +127,30 @@ const NavMenu = ({ goHome, goApp, currentView }) => {
               }}
             >
               🚀 Generator
+            </button>
+            {/* Theme Toggle */}
+            <button
+              onClick={() => {
+                toggleTheme();
+                // Don't close menu immediately so user can see change
+              }}
+              style={{
+                background: "transparent",
+                color: "var(--text-primary)",
+                border: "none",
+                borderTop: "1px solid var(--border-color)",
+                padding: "0.75rem 1rem",
+                marginTop: "0.25rem",
+                textAlign: "left",
+                borderRadius: "0 0 8px 8px",
+                cursor: "pointer",
+                fontSize: "0.9rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              {currentTheme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
             </button>
           </motion.div>
         )}
@@ -136,7 +164,24 @@ function App() {
   const [isInputExpanded, setIsInputExpanded] = useState(false); // Default: Compact sidebar
   const [showHome, setShowHome] = useState(true);
 
+  // Theme State
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light"; // Default to light
+  });
+
+  // Apply Theme
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
   // Sample Data: HG Construction Ltd (Real-world Example)
+  // ... keeping sampleData ...
+
   const sampleData = {
     organizationName: "HG Construction Ltd",
     address: "4 Hunting Gate, Hitchin, Hertfordshire, SG4 0TJ, United Kingdom",
@@ -206,6 +251,8 @@ function App() {
         goHome={navigateToHome}
         goApp={navigateToApp}
         currentView={showHome ? "home" : "app"}
+        toggleTheme={toggleTheme}
+        currentTheme={theme}
       />
 
       <AnimatePresence mode="wait">
