@@ -322,7 +322,7 @@ const DocumentPreview = ({ formData }) => {
         <html>
           <head>
             <style>
-              body { font-family: 'Times New Roman', serif; }
+              body { font-family: 'Calibri', 'Segoe UI', sans-serif; }
               table { border-collapse: collapse; width: 100%; }
               td, th { border: 1px solid #000; padding: 5px; }
             </style>
@@ -332,7 +332,7 @@ const DocumentPreview = ({ formData }) => {
       `;
 
       const result = await googleDriveService.uploadHtmlAsDoc(
-        `${data.companyName} - Organization Profile`,
+        "Section1-OrganizationalProfile",
         htmlContent
       );
 
@@ -402,11 +402,7 @@ const DocumentPreview = ({ formData }) => {
           </button>
           <button
             onClick={async () => {
-              const safeName = (data.companyName || "Organization")
-                .replace(/[^a-z0-9 ]/gi, "")
-                .trim()
-                .replace(/\s+/g, "_");
-              const fileName = `${safeName}_ISO_9001.docx`; // v11.0 .docx
+              const fileName = "Section1-OrganizationalProfile.docx";
               await generateDocx(data, logoBase64, fileName);
             }}
             className="secondary-btn"
