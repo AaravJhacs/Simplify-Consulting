@@ -385,7 +385,7 @@ th {
 button {
   border: none;
   padding: 0.875rem 1.75rem;
-  border-radius: 12px;
+  border-radius: 50px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -697,8 +697,8 @@ button {
 }
 
 .primary-cta {
-  background: white;
-  color: #0f172a;
+  background: var(--accent-gradient);
+  color: white;
   padding: 1rem 2.5rem;
   border-radius: 50px;
   font-weight: 600;
@@ -721,11 +721,12 @@ button {
   border-radius: 50px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .secondary-cta:hover {
   background: var(--card-bg);
+  transform: translateY(-2px);
 }
 
 /* Background Visuals */
