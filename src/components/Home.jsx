@@ -243,7 +243,16 @@ const Home = ({ onStart }) => {
             },
             {
               title: "Internal Audit",
-              desc: "Conduct an internal audit (Do it yourself with our training or seek helper).",
+              desc: (
+                <>
+                  Conduct an internal audit. Do it yourself by going through our{" "}
+                  <span className="fake-link">internal audit training</span> or{" "}
+                  <span className="fake-link">
+                    seek help from our consultant
+                  </span>
+                  .
+                </>
+              ),
             },
             {
               title: "Certification",

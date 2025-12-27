@@ -949,3 +949,16 @@ button:active {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
 }
+
+
+/* Fake Link Style */
+.fake-link {
+  color: #3b82f6;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.fake-link:hover {
+  color: #2563eb;
+}
