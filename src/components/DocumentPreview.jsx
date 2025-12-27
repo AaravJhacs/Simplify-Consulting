@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getDocumentData } from "../utils/aiLogic.js";
-import { exportToDocx } from "../utils/exportToDocx.js";
+import { generateDocx } from "../utils/generateDocx.js";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Page = ({ children, id, className = "" }) => (
@@ -280,6 +280,14 @@ const DocumentPreview = ({ formData }) => {
     }
   }, [formData.companyLogo]);
 
+  // Update Page Title for PDF Printing names
+  useEffect(() => {
+    if (data.companyName && data.companyName !== "<Company Name>") {
+      const safeName = data.companyName.replace(/[^a-z0-9 ]/gi, "").trim();
+      document.title = `${safeName}_ISO_9001_Profile`;
+    }
+  }, [data.companyName]);
+
   const handleZoomIn = () => setZoomLevel((prev) => Math.min(prev + 0.1, 1.5));
   const handleZoomOut = () => setZoomLevel((prev) => Math.max(prev - 0.1, 0.3));
 
@@ -393,13 +401,30 @@ const DocumentPreview = ({ formData }) => {
             Print / PDF
           </button>
           <button
-            onClick={() =>
-              exportToDocx("preview-content", "Organization_Profile.docx")
-            }
+            onClick={async () => {
+              const safeName = (data.companyName || "Organization")
+                .replace(/[^a-z0-9 ]/gi, "")
+                .trim()
+                .replace(/\s+/g, "_");
+              const fileName = `${safeName}_ISO_9001.docx`; // v11.0 .docx
+              const url = await generateDocx(data, logoBase64, fileName);
+              if (url) {
+                const manualLink = document.getElementById(
+                  "manual-download-link"
+                );
+                if (manualLink) {
+                  manualLink.href = url;
+                  manualLink.download = fileName;
+                  manualLink.style.display = "block";
+                  manualLink.innerText = `Click here if download didn't start (${fileName})`;
+                }
+              }
+            }}
             className="secondary-btn"
           >
-            Docx
+            DOCX
           </button>
+
           <button
             onClick={handleGoogleExport}
             className="primary-btn"
@@ -408,6 +433,17 @@ const DocumentPreview = ({ formData }) => {
             Save to YOUR Google Drive
           </button>
         </div>
+        {/* Fallback Link for persistent browser issues */}
+        <a
+          id="manual-download-link"
+          style={{
+            display: "none",
+            marginTop: "10px",
+            color: "blue",
+            textDecoration: "underline",
+            cursor: "pointer",
+          }}
+        ></a>
       </div>
 
       {/* Apply zoom style. Note: 'zoom' property works well on Chrome/Safari/Edge for layout scaling */}

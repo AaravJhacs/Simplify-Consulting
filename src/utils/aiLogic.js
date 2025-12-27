@@ -94,40 +94,80 @@ export const getDocumentData = (answers) => {
 export const generateDocument = (answers) => "";
 
 export const questions = [
-  { id: "companyLegalName", label: "1. Company Legal Name", type: "text" },
-  { id: "shortCompanyName", label: "2. Short Company Name", type: "text" },
-  { id: "companyAddress", label: "3. Company Address", type: "textarea" },
-  { id: "companyWebsite", label: "4. Company Website", type: "text" },
-  { id: "companyPhone", label: "5. Company Phone No.", type: "tel" },
+  {
+    id: "companyLegalName",
+    label: "1. Company Legal Name",
+    type: "text",
+    tooltip:
+      "Enter the full registered legal name of your organization as it appears on official documents.",
+  },
+  {
+    id: "shortCompanyName",
+    label: "2. Short Company Name",
+    type: "text",
+    tooltip:
+      "A defined short name or abbreviation (e.g., 'ABC') used internally.",
+  },
+  {
+    id: "companyAddress",
+    label: "3. Company Address",
+    type: "textarea",
+    tooltip: "The physical address of the site to be certified.",
+  },
+  {
+    id: "companyWebsite",
+    label: "4. Company Website",
+    type: "text",
+    tooltip: "Your official business website URL.",
+  },
+  {
+    id: "companyPhone",
+    label: "5. Company Phone No.",
+    type: "tel",
+    tooltip: "Primary contact number for the organization.",
+  },
   {
     id: "originatorName",
     label: "6. Name of the person creating the QMS (Originator)",
     type: "text",
+    tooltip: "The individual responsible for drafting/creating this manual.",
   },
   {
     id: "originatorDesignation",
     label: "7. Designation of the Originator",
     type: "text",
+    tooltip: "Job title of the person creating the QMS.",
   },
-  { id: "approverName", label: "8. Name of the approver", type: "text" },
+  {
+    id: "approverName",
+    label: "8. Name of the approver",
+    type: "text",
+    tooltip:
+      "The senior person (e.g., Director, CEO) who authorizes this document.",
+  },
   {
     id: "approverDesignation",
     label: "9. Designation of the approver",
     type: "text",
+    tooltip: "Job title of the approver.",
   },
   {
     id: "companyLogo",
     label: "10. Upload the Company Logo (Image)",
     type: "file",
+    tooltip: "Upload a high-quality image file (PNG/JPG) of your company logo.",
   },
   {
     id: "companyDetails",
     label: "11. Company Details (Provide small write-up about the company)",
     type: "textarea",
+    tooltip:
+      "A brief introduction to your company, its history, and what it does.",
   },
   {
     id: "productsServices",
     label: "12. Products and/or services provided",
     type: "textarea",
+    tooltip: "List the core products and/or services you deliver to customers.",
   },
 ];

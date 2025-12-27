@@ -16,7 +16,23 @@ const Questionnaire = ({ formData, setFormData }) => {
       <form onSubmit={(e) => e.preventDefault()}>
         {questions.map((q) => (
           <div key={q.id} className="form-group">
-            <label htmlFor={q.id}>{q.label}</label>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                marginBottom: "0.75rem",
+              }}
+            >
+              <label htmlFor={q.id} style={{ marginBottom: 0 }}>
+                {q.label}
+              </label>
+              {q.tooltip && (
+                <div className="tooltip-container" title={q.tooltip}>
+                  <span className="tooltip-icon">?</span>
+                </div>
+              )}
+            </div>
             {q.type === "textarea" ? (
               <textarea
                 id={q.id}

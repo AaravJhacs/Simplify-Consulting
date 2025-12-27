@@ -258,7 +258,7 @@ function App() {
                 style={{
                   flexGrow: isInputExpanded ? 1 : 0,
                   flexShrink: 0,
-                  overflow: "hidden",
+                  overflowY: "auto",
                 }}
               >
                 <div
