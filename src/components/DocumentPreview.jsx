@@ -407,18 +407,7 @@ const DocumentPreview = ({ formData }) => {
                 .trim()
                 .replace(/\s+/g, "_");
               const fileName = `${safeName}_ISO_9001.docx`; // v11.0 .docx
-              const url = await generateDocx(data, logoBase64, fileName);
-              if (url) {
-                const manualLink = document.getElementById(
-                  "manual-download-link"
-                );
-                if (manualLink) {
-                  manualLink.href = url;
-                  manualLink.download = fileName;
-                  manualLink.style.display = "block";
-                  manualLink.innerText = `Click here if download didn't start (${fileName})`;
-                }
-              }
+              await generateDocx(data, logoBase64, fileName);
             }}
             className="secondary-btn"
           >
@@ -433,17 +422,6 @@ const DocumentPreview = ({ formData }) => {
             Save to YOUR Google Drive
           </button>
         </div>
-        {/* Fallback Link for persistent browser issues */}
-        <a
-          id="manual-download-link"
-          style={{
-            display: "none",
-            marginTop: "10px",
-            color: "blue",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        ></a>
       </div>
 
       {/* Apply zoom style. Note: 'zoom' property works well on Chrome/Safari/Edge for layout scaling */}
