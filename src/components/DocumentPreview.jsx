@@ -414,11 +414,7 @@ const DocumentPreview = ({ formData }) => {
             DOCX
           </button>
 
-          <button
-            onClick={handleGoogleExport}
-            className="primary-btn"
-            style={{ background: "#4285F4" }}
-          >
+          <button onClick={handleGoogleExport} className="primary-btn">
             Save to YOUR Google Drive
           </button>
         </div>
