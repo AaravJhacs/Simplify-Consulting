@@ -813,14 +813,14 @@ button {
 }
 
 .feature-box p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
 /* How It Works */
 .how-it-works {
   padding: 5rem 5%;
-  background: linear-gradient(to bottom, #000000, #0f172a);
+  background: var(--bg-main);
 }
 
 .steps-container {
@@ -838,14 +838,14 @@ button {
   min-width: 250px;
   text-align: center;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--card-bg);
   border-radius: 16px;
 }
 
 .step-number {
   font-size: 3rem;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.05);
+  color: var(--border-color);
   display: block;
   margin-bottom: -1rem;
 }
@@ -868,9 +868,9 @@ button {
 
 /* Footer */
 .home-footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: var(--glass-border);
   padding: 3rem 5%;
-  background: #0f172a;
+  background: var(--nav-bg);
 }
 
 .footer-content {
@@ -886,11 +886,11 @@ button {
 .footer-content h4 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  color: white;
+  color: var(--text-primary);
 }
 
 .footer-content p {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
