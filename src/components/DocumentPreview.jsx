@@ -332,7 +332,7 @@ const DocumentPreview = ({ formData }) => {
       `;
 
       const result = await googleDriveService.uploadHtmlAsDoc(
-        "Section1-OrganizationalProfile",
+        "OrganizationalProfile",
         htmlContent
       );
 
@@ -402,7 +402,7 @@ const DocumentPreview = ({ formData }) => {
           </button>
           <button
             onClick={async () => {
-              const fileName = "Section1-OrganizationalProfile.docx";
+              const fileName = "OrganizationalProfile.docx";
               await generateDocx(data, logoBase64, fileName);
             }}
             className="secondary-btn"
