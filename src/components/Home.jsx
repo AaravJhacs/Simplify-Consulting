@@ -54,7 +54,6 @@ const Home = ({ onStart }) => {
               variants={fadeInUp}
               style={{
                 fontSize: "2rem",
-                color: "#e2e8f0",
                 marginBottom: "1.5rem",
                 fontWeight: 600,
               }}
@@ -109,10 +108,7 @@ const Home = ({ onStart }) => {
       </section>
 
       {/* Problem Section (Why Traditional Fails) */}
-      <section
-        className="features-section"
-        style={{ background: "#0f172a", paddingTop: "5rem" }}
-      >
+      <section className="features-section" style={{ paddingTop: "5rem" }}>
         <div className="section-header">
           <h2>Why Traditional Certification Preparation Fails?</h2>
           <p>Certification shouldn't be this hard.</p>
@@ -276,7 +272,9 @@ const Home = ({ onStart }) => {
                 <h4 style={{ margin: "0 0 0.5rem 0", fontSize: "1.2rem" }}>
                   {step.title}
                 </h4>
-                <p style={{ margin: 0, color: "#94a3b8" }}>{step.desc}</p>
+                <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+                  {step.desc}
+                </p>
               </div>
             </div>
           ))}
@@ -284,7 +282,7 @@ const Home = ({ onStart }) => {
       </section>
 
       {/* Distinction & Target Audience */}
-      <section className="features-section" style={{ background: "#0f172a" }}>
+      <section className="features-section">
         <div className="grid-container">
           <div className="feature-box">
             <h3>How is this tool different?</h3>
