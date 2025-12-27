@@ -252,9 +252,6 @@ export const generateDocx = async (
               font: "Calibri",
               size: 22, // 11pt
             },
-            paragraph: {
-              spacing: { line: 276 }, // Optional: slightly nicer line height
-            },
           },
         },
       },
