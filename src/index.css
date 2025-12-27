@@ -846,7 +846,8 @@ button {
 .step-number {
   font-size: 3rem;
   font-weight: 800;
-  color: var(--border-color);
+  color: var(--accent-primary);
+  opacity: 0.5;
   display: block;
   margin-bottom: -1rem;
 }
